@@ -24,8 +24,9 @@ debug_mode = []
 
 #runtime(all of database) (use this you should add default-features = false)
 actix = ["async-std", "sqlx-core/runtime-actix-rustls", "all-database"]
-tokio02 = ["async-std/tokio02", "sqlx-core/runtime-tokio-rustls", "all-database"]
-tokio03 = ["async-std/tokio03", "sqlx-core/runtime-tokio-rustls", "all-database"]
+tokio1 = ["async-std/tokio1", "sqlx-core/runtime-async-std-rustls", "all-database"]
+tokio02 = ["async-std/tokio02", "sqlx-core/runtime-async-std-rustls", "all-database"]
+tokio03 = ["async-std/tokio03", "sqlx-core/runtime-async-std-rustls", "all-database"]
 async-io = ["async-std", "sqlx-core/runtime-async-std-rustls", "all-database"]
 
 #runtime(one of database) (use this you should add default-features = false)
@@ -34,15 +35,20 @@ async-io-postgres = ["async-std", "sqlx-core/runtime-async-std-rustls", "postgre
 async-io-sqlite = ["async-std", "sqlx-core/runtime-async-std-rustls", "sqlite"]
 async-io-mssql = ["async-std", "sqlx-core/runtime-async-std-rustls", "mssql"]
 
-tokio03-mysql = ["async-std/tokio03", "sqlx-core/runtime-tokio-rustls", "mysql"]
-tokio03-postgres = ["async-std/tokio03", "sqlx-core/runtime-tokio-rustls", "postgres"]
-tokio03-sqlite = ["async-std/tokio03", "sqlx-core/runtime-tokio-rustls", "sqlite"]
-tokio03-mssql = ["async-std/tokio03", "sqlx-core/runtime-tokio-rustls", "mssql"]
+tokio03-mysql = ["async-std/tokio03", "sqlx-core/runtime-async-std-rustls", "mysql"]
+tokio03-postgres = ["async-std/tokio03", "sqlx-core/runtime-async-std-rustls", "postgres"]
+tokio03-sqlite = ["async-std/tokio03", "sqlx-core/runtime-async-std-rustls", "sqlite"]
+tokio03-mssql = ["async-std/tokio03", "sqlx-core/runtime-async-std-rustls", "mssql"]
 
-tokio02-mysql = ["async-std/tokio02", "sqlx-core/runtime-tokio-rustls", "mysql"]
-tokio02-postgres = ["async-std/tokio02", "sqlx-core/runtime-tokio-rustls", "postgres"]
-tokio02-sqlite = ["async-std/tokio02", "sqlx-core/runtime-tokio-rustls", "sqlite"]
-tokio02-mssql = ["async-std/tokio02", "sqlx-core/runtime-tokio-rustls", "mssql"]
+tokio02-mysql = ["async-std/tokio02", "sqlx-core/runtime-async-std-rustls", "mysql"]
+tokio02-postgres = ["async-std/tokio02", "sqlx-core/runtime-async-std-rustls", "postgres"]
+tokio02-sqlite = ["async-std/tokio02", "sqlx-core/runtime-async-std-rustls", "sqlite"]
+tokio02-mssql = ["async-std/tokio02", "sqlx-core/runtime-async-std-rustls", "mssql"]
+
+tokio1-mysql = ["async-std/tokio1", "sqlx-core/runtime-async-std-rustls", "mysql"]
+tokio1-postgres = ["async-std/tokio1", "sqlx-core/runtime-async-std-rustls", "postgres"]
+tokio1-sqlite = ["async-std/tokio1", "sqlx-core/runtime-async-std-rustls", "sqlite"]
+tokio1-mssql = ["async-std/tokio1", "sqlx-core/runtime-async-std-rustls", "mssql"]
 
 actix-mysql = ["async-std/tokio02", "sqlx-core/runtime-actix-rustls", "mysql"]
 actix-postgres = ["async-std/tokio02", "sqlx-core/runtime-actix-rustls", "postgres"]

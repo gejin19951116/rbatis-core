@@ -10,4 +10,4 @@ publish = false
 [dependencies]
 
 async-std = { version = "1.8", features = ["attributes", "tokio02", "tokio03"] }
-rbatis-core = { path = "../"}
+rbatis-core = { path = "../",features = ["tokio1-mysql"]}
