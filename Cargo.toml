@@ -59,7 +59,7 @@ mssql = ["sqlx-core/mssql"]
 [dependencies]
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1", features = ["raw_value","preserve_order"] }
-async-std = { version = "1.8", optional = true, features = ["attributes", "unstable"] }
+async-std = { version = "1.9", optional = true, features = ["attributes", "unstable"] }
 chrono = { version = "0.4", default-features = false, features = ["clock", "serde"] }
 log = { version = "0.4", default-features = false }
 rexpr = {version="1.0"}
