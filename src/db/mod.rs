@@ -1,10 +1,12 @@
 use std::time::Duration;
 
 use chrono::NaiveDateTime;
-use serde::{Deserialize, Serialize};
 use serde::de::DeserializeOwned;
+use serde::{Deserialize, Serialize};
 
-pub use db_adapter::{DBConnection, DBConnectOption, DBExecResult, DBPool, DBPoolConn, DBQuery, DBTx};
+pub use db_adapter::{
+    DBConnectOption, DBConnection, DBExecResult, DBPool, DBPoolConn, DBQuery, DBTx,
+};
 
 pub mod db_adapter;
 
@@ -44,7 +46,6 @@ impl DBPoolOptions {
         DBPoolOptions::default()
     }
 }
-
 
 #[derive(Serialize, Deserialize, Debug, Clone, Copy, Eq, PartialEq)]
 pub enum DriverType {

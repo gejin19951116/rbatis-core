@@ -2,15 +2,15 @@ use serde_json::{json, Value};
 use sqlx_core::column::Column;
 use sqlx_core::decode::Decode;
 use sqlx_core::error::BoxDynError;
-use sqlx_core::postgres::{PgValue, PgValueRef, Postgres};
-use sqlx_core::postgres::PgRow;
 use sqlx_core::postgres::types::{PgMoney, PgTimeTz};
+use sqlx_core::postgres::PgRow;
+use sqlx_core::postgres::{PgValue, PgValueRef, Postgres};
 use sqlx_core::row::Row;
 use sqlx_core::type_info::TypeInfo;
-use sqlx_core::types::{BigDecimal, Json, Uuid};
 use sqlx_core::types::chrono::{FixedOffset, NaiveTime};
 use sqlx_core::types::ipnetwork::IpNetwork;
 use sqlx_core::types::time::Time;
+use sqlx_core::types::{BigDecimal, Json, Uuid};
 use sqlx_core::value::ValueRef;
 
 use crate::convert::{JsonCodec, RefJsonCodec, ResultCodec};
@@ -182,7 +182,8 @@ impl<'c> JsonCodec for PgValueRef<'c> {
             }
 
             "INTERVAL" => {
-                let r: Option<sqlx_core::postgres::types::PgInterval> = Decode::<'_, Postgres>::decode(self)?;
+                let r: Option<sqlx_core::postgres::types::PgInterval> =
+                    Decode::<'_, Postgres>::decode(self)?;
                 return Ok(json!(PgInterval::from(r.unwrap())));
             }
             "VARBIT" | "BIT" => {
@@ -221,7 +222,6 @@ impl<'c> JsonCodec for PgValueRef<'c> {
         }
     }
 }
-
 
 impl RefJsonCodec for Vec<PgRow> {
     fn try_to_json(&self) -> crate::Result<serde_json::Value> {

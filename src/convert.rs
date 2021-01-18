@@ -14,12 +14,8 @@ impl StmtConvert for DriverType {
             DriverType::Postgres => {
                 format!("${}", index + 1)
             }
-            DriverType::Mysql => {
-                "?".to_string()
-            }
-            DriverType::Sqlite => {
-                "?".to_string()
-            }
+            DriverType::Mysql => "?".to_string(),
+            DriverType::Sqlite => "?".to_string(),
             DriverType::Mssql => {
                 format!("@p{}", index + 1)
             }

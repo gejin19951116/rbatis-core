@@ -6,8 +6,8 @@ pub use async_std::{
     channel::Sender,
     fs,
     future::timeout,
-    io::{Read as AsyncRead, Write as AsyncWrite},
     io::prelude::ReadExt as AsyncReadExt,
+    io::{Read as AsyncRead, Write as AsyncWrite},
     net::TcpStream,
     sync::Arc,
     sync::Mutex,
@@ -21,4 +21,3 @@ pub use async_std::{
     task::spawn_blocking,
     task::yield_now,
 };
-

@@ -68,7 +68,8 @@ impl<'r> JsonCodec for sqlx_core::mysql::MySqlValueRef<'r> {
 
                 return Ok(json!(r));
             }
-            "BLOB" | "TINYBLOB" | "MEDIUMBLOB" | "LONGBLOB" | "TINYTEXT" | "MEDIUMTEXT" | "LONGTEXT" => {
+            "BLOB" | "TINYBLOB" | "MEDIUMBLOB" | "LONGBLOB" | "TINYTEXT" | "MEDIUMTEXT"
+            | "LONGTEXT" => {
                 let r: Option<Vec<u8>> = Decode::<'_, MySql>::decode(self)?;
                 return Ok(json!(r));
             }
@@ -104,7 +105,6 @@ impl<'r> JsonCodec for sqlx_core::mysql::MySqlValueRef<'r> {
         }
     }
 }
-
 
 impl RefJsonCodec for Vec<MySqlRow> {
     fn try_to_json(&self) -> crate::Result<serde_json::Value> {

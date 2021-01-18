@@ -5,4 +5,3 @@
 #![allow(unsafe_code)]
 
 mod sqlx_value;
-

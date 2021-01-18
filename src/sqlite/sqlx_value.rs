@@ -3,8 +3,8 @@ use sqlx_core::column::Column;
 use sqlx_core::decode::Decode;
 use sqlx_core::error::BoxDynError;
 use sqlx_core::row::Row;
-use sqlx_core::sqlite::{Sqlite, SqliteValue, SqliteValueRef};
 use sqlx_core::sqlite::SqliteRow;
+use sqlx_core::sqlite::{Sqlite, SqliteValue, SqliteValueRef};
 use sqlx_core::type_info::TypeInfo;
 use sqlx_core::value::ValueRef;
 
@@ -14,9 +14,7 @@ impl<'c> JsonCodec for SqliteValueRef<'c> {
     fn try_to_json(self) -> crate::Result<serde_json::Value> {
         let type_string = self.type_info().name().to_owned();
         return match type_string.as_str() {
-            "NULL" => {
-                Ok(serde_json::Value::Null)
-            }
+            "NULL" => Ok(serde_json::Value::Null),
             "TEXT" => {
                 let r: Option<String> = Decode::<'_, Sqlite>::decode(self)?;
                 return Ok(json!(r));

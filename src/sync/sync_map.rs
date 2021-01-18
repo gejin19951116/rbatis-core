@@ -11,20 +11,26 @@ use crate::runtime::{RwLock, RwLockReadGuard, RwLockWriteGuard};
 /// SyncMap impl the Send and Sync
 /// it use of RwLock,so it's safe! but we went convert lifetime ,so use some lifetime convert unsafe method(but it is safe)
 #[derive(Debug)]
-pub struct SyncMap<K, V> where K: Eq + Hash {
+pub struct SyncMap<K, V>
+where
+    K: Eq + Hash,
+{
     pub shard: RwLock<HashMap<K, V, RandomState>>,
 }
 
-impl<'a, K: 'a + Eq + Hash, V: 'a> SyncMap<K, V> where K: Eq + Hash {
+impl<'a, K: 'a + Eq + Hash, V: 'a> SyncMap<K, V>
+where
+    K: Eq + Hash,
+{
     pub fn new() -> Self {
         Self {
-            shard: RwLock::new(HashMap::new())
+            shard: RwLock::new(HashMap::new()),
         }
     }
 
     pub fn with_capacity(capacity: usize) -> Self {
         Self {
-            shard: RwLock::new(HashMap::with_capacity(capacity))
+            shard: RwLock::new(HashMap::with_capacity(capacity)),
         }
     }
 
@@ -34,9 +40,10 @@ impl<'a, K: 'a + Eq + Hash, V: 'a> SyncMap<K, V> where K: Eq + Hash {
     }
 
     pub async fn remove<Q>(&self, key: &Q) -> Option<V>
-        where
-            K: Borrow<Q>,
-            Q: Hash + Eq + ?Sized {
+    where
+        K: Borrow<Q>,
+        Q: Hash + Eq + ?Sized,
+    {
         let mut w = self.shard.write().await;
         w.remove(key)
     }
@@ -65,8 +72,10 @@ impl<'a, K: 'a + Eq + Hash, V: 'a> SyncMap<K, V> where K: Eq + Hash {
     }
 
     pub async fn get<Q>(&'a self, k: &Q) -> Option<Ref<'a, K, V>>
-        where K: Borrow<Q>,
-              Q: Hash + Eq + ?Sized {
+    where
+        K: Borrow<Q>,
+        Q: Hash + Eq + ?Sized,
+    {
         let mut get_ref = Ref::new(self.shard.read().await, None);
         unsafe {
             let v = get_ref._guard.get(k);
@@ -81,8 +90,10 @@ impl<'a, K: 'a + Eq + Hash, V: 'a> SyncMap<K, V> where K: Eq + Hash {
     }
 
     pub async fn get_mut<Q>(&'a self, k: &Q) -> Option<RefMut<'a, K, V>>
-        where K: Borrow<Q>,
-              Q: Hash + Eq + ?Sized {
+    where
+        K: Borrow<Q>,
+        Q: Hash + Eq + ?Sized,
+    {
         let mut get_ref = RefMut::new(self.shard.write().await, None);
         unsafe {
             let v = get_ref._guard.get_mut(k);
@@ -109,12 +120,17 @@ pub unsafe fn change_lifetime_mut<'a, 'b, T>(x: &'a mut T) -> &'b mut T {
 
 #[derive(Debug)]
 pub struct Ref<'a, K, V>
-    where K: Eq + Hash {
+where
+    K: Eq + Hash,
+{
     _guard: RwLockReadGuard<'a, HashMap<K, V, RandomState>>,
     v: Option<&'a V>,
 }
 
-impl<'a, K, V> Ref<'a, K, V> where K: Eq + Hash {
+impl<'a, K, V> Ref<'a, K, V>
+where
+    K: Eq + Hash,
+{
     pub fn new(guard: RwLockReadGuard<'a, HashMap<K, V, RandomState>>, v: Option<&'a V>) -> Self {
         let s = Self {
             _guard: guard,
@@ -142,7 +158,10 @@ pub struct RefMut<'a, K, V, S = RandomState> {
 }
 
 impl<'a, K: Eq + Hash, V> RefMut<'a, K, V> {
-    pub fn new(guard: RwLockWriteGuard<'a, HashMap<K, V, RandomState>>, v: Option<&'a mut V>) -> Self {
+    pub fn new(
+        guard: RwLockWriteGuard<'a, HashMap<K, V, RandomState>>,
+        v: Option<&'a mut V>,
+    ) -> Self {
         let s = Self {
             _guard: guard,
             v: v,
@@ -159,7 +178,6 @@ impl<'a, K: Eq + Hash, V> RefMut<'a, K, V> {
     }
 }
 
-
 impl<'a, K: Eq + Hash, V> Deref for RefMut<'a, K, V> {
     type Target = V;
 
@@ -173,7 +191,6 @@ impl<'a, K: Eq + Hash, V> DerefMut for RefMut<'a, K, V> {
         self.value_mut()
     }
 }
-
 
 #[cfg(test)]
 mod test {
@@ -220,7 +237,6 @@ mod test {
         });
     }
 
-
     //bench on windows10 40 nano/op.  It depends on the runtime(tokio/async_std) speed
     //test command:
     //cargo test --release --color=always --package rbatis-core --lib sync::sync_map::test::bench_test --no-fail-fast -- --exact -Z unstable-options --format=json --show-output
@@ -246,6 +262,10 @@ mod test {
     }
 
     fn time(total: u64, time: Duration) {
-        println!("use Time: {:?} ,each:{} ns/op", &time, time.as_nanos() / (total as u128));
+        println!(
+            "use Time: {:?} ,each:{} ns/op",
+            &time,
+            time.as_nanos() / (total as u128)
+        );
     }
 }

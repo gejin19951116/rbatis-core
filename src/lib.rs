@@ -14,6 +14,8 @@ pub use error::{Error, Result};
 
 pub mod runtime;
 
+#[cfg(feature = "mssql")]
+mod mssql;
 /// database
 #[cfg(feature = "mysql")]
 mod mysql;
@@ -21,13 +23,11 @@ mod mysql;
 mod postgres;
 #[cfg(feature = "sqlite")]
 mod sqlite;
-#[cfg(feature = "mssql")]
-mod mssql;
 #[macro_use]
 pub mod error;
-pub mod results;
-pub mod decode;
-pub mod db;
 pub mod convert;
+pub mod db;
+pub mod decode;
+pub mod results;
 pub mod sync;
 pub mod value;

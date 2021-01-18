@@ -89,11 +89,15 @@ impl<'r> JsonCodec for sqlx_core::mssql::MssqlValueRef<'r> {
             //     return Ok(t.unwrap_or(serde_json::Value::Null));
             // }
             // you can use already supported types to decode this
-            _ => return Err(crate::Error::from(format!("un support database type for:{:?}!", type_string))),
+            _ => {
+                return Err(crate::Error::from(format!(
+                    "un support database type for:{:?}!",
+                    type_string
+                )))
+            }
         }
     }
 }
-
 
 impl RefJsonCodec for Vec<MssqlRow> {
     fn try_to_json(&self) -> crate::Result<serde_json::Value> {

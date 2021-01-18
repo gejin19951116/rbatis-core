@@ -2,7 +2,6 @@ use serde::{Deserialize, Serialize};
 
 mod sqlx_value;
 
-
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 pub struct PgInterval {
     pub months: i32,

@@ -8,7 +8,9 @@ use crate::Error;
 /// serde_json::Value,BigDecimal, i8..i64,u8..u64,serde_json::Number,bool,String
 /// or object used serde_json macro object
 pub fn json_decode<T: ?Sized>(datas: Vec<serde_json::Value>) -> Result<T, crate::Error>
-    where T: DeserializeOwned {
+where
+    T: DeserializeOwned,
+{
     let mut js = serde_json::Value::Null;
     let type_name = std::any::type_name::<T>();
     if is_array(type_name) {
@@ -83,7 +85,10 @@ pub fn json_decode<T: ?Sized>(datas: Vec<serde_json::Value>) -> Result<T, crate:
         return Result::Ok(decode_result.unwrap());
     } else {
         let e = decode_result.err().unwrap().to_string();
-        return Result::Err(Error::from(format!("[rbatis] json_decode fail decode_type:\"{}\",serde_err:\"{}\"", type_name, e)));
+        return Result::Err(Error::from(format!(
+            "[rbatis] json_decode fail decode_type:\"{}\",serde_err:\"{}\"",
+            type_name, e
+        )));
     }
 }
 
@@ -94,7 +99,6 @@ fn is_array(type_name: &str) -> bool {
         || type_name.starts_with("alloc::collections::vec_deque")
         || type_name.starts_with("std::collections::hash::set")
         || type_name.starts_with("alloc::vec::Vec<")
-
         || type_name.starts_with("core::option::Option<[")
         || type_name.starts_with("core::option::Option<&[")
         || type_name.starts_with("core::option::Option<alloc::vec::Vec<")
@@ -106,7 +110,6 @@ fn is_array(type_name: &str) -> bool {
     }
     return false;
 }
-
 
 #[cfg(test)]
 mod test {
@@ -123,7 +126,8 @@ mod test {
         "a":"1",
         "b":2
         }
-        )]).unwrap();
+        )])
+        .unwrap();
         println!("{:#?}", m);
     }
 
@@ -134,13 +138,14 @@ mod test {
         "a":"1",
         "b":2
         }
-        )]).unwrap();
+        )])
+        .unwrap();
         println!("{:#?}", m);
     }
 
     #[test]
     fn test_is_array() {
-        let dq_name = std::any::type_name::<VecDeque::<i32>>();
+        let dq_name = std::any::type_name::<VecDeque<i32>>();
         assert_eq!(is_array(dq_name), true);
     }
 }
