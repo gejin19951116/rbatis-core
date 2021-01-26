@@ -69,6 +69,7 @@ async-std = { version = "1.9", optional = true, features = ["attributes", "unsta
 chrono = { version = "0.4", default-features = false, features = ["clock", "serde"] }
 log = { version = "0.4", default-features = false }
 rexpr = {version="1.0"}
+py_sql = "1.0"
 lazy_static = "1.4"
 
 time = { version = "0.2.16", features = ["serde"] }

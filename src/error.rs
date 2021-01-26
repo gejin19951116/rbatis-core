@@ -143,6 +143,18 @@ impl<T> OptionToResult<T> for Option<T> {
     }
 }
 
+impl From<py_sql::error::Error> for Error {
+    fn from(arg: py_sql::error::Error) -> Error {
+        Error::E(arg.to_string())
+    }
+}
+
+impl Into<py_sql::error::Error> for Error {
+    fn into(self) -> py_sql::error::Error {
+        py_sql::error::Error::E(self.to_string())
+    }
+}
+
 #[test]
 fn test_json_error() {
     let e = Error::from("fuck");
