@@ -11,3 +11,6 @@ publish = false
 
 async-std = { version = "1.8", features = ["attributes", "tokio02", "tokio03"] }
 rbatis-core = { path = "../",features = ["tokio1-mysql"]}
+
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["raw_value"] }

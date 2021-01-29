@@ -5,10 +5,9 @@ fn main() -> Result<(), rbatis_core::Error> {
         //Automatic judgment of database type
         let pool = DBPool::new("mysql://root:123456@localhost:3306/test").await?;
         let mut conn = pool.acquire().await?;
-        let count: u64 = conn
-            .execute("SELECT count(1) FROM biz_activity;")
-            .await?
-            .rows_affected;
+        let count: serde_json::Value = conn
+            .fetch("SELECT count(1) FROM biz_activity;")
+            .await.unwrap().0;
         println!("count: {}", count);
         return Ok(());
     })
