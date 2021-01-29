@@ -64,11 +64,12 @@ mssql = ["sqlx-core/mssql"]
 
 [dependencies]
 serde = { version = "1", features = ["derive"] }
-serde_json = { version = "1", features = ["raw_value","preserve_order"] }
+serde_json = { version = "1", features = ["raw_value"] }
 async-std = { version = "1.9", optional = true, features = ["attributes", "unstable"] }
 chrono = { version = "0.4", default-features = false, features = ["clock", "serde"] }
 log = { version = "0.4", default-features = false }
 rexpr = {version="1.0"}
+py_sql = "1.0"
 lazy_static = "1.4"
 
 time = { version = "0.2.16", features = ["serde"] }
