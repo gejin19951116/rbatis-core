@@ -10,28 +10,27 @@ use sqlx_core::acquire::Acquire;
 use sqlx_core::arguments::{Arguments, IntoArguments};
 use sqlx_core::connection::{ConnectOptions, Connection};
 use sqlx_core::database::Database;
-use sqlx_core::done::Done;
 use sqlx_core::encode::Encode;
 use sqlx_core::executor::Executor;
 #[cfg(feature = "mssql")]
 use sqlx_core::mssql::{
-    Mssql, MssqlArguments, MssqlConnectOptions, MssqlConnection, MssqlDone, MssqlPool, MssqlRow,
+    Mssql, MssqlArguments, MssqlConnectOptions, MssqlConnection, MssqlQueryResult, MssqlPool, MssqlRow,
 };
 #[cfg(feature = "mysql")]
 use sqlx_core::mysql::{
-    MySql, MySqlArguments, MySqlConnectOptions, MySqlConnection, MySqlDone, MySqlPool, MySqlRow,
+    MySql, MySqlArguments, MySqlConnectOptions, MySqlConnection, MySqlQueryResult, MySqlPool, MySqlRow,
     MySqlSslMode,
 };
 use sqlx_core::pool::PoolConnection;
 #[cfg(feature = "postgres")]
 use sqlx_core::postgres::{
-    PgArguments, PgConnectOptions, PgConnection, PgDone, PgPool, PgPoolOptions, PgRow, PgSslMode,
+    PgArguments, PgConnectOptions, PgConnection, PgQueryResult, PgPool, PgPoolOptions, PgRow, PgSslMode,
     Postgres,
 };
 use sqlx_core::query::{query, Query};
 #[cfg(feature = "sqlite")]
 use sqlx_core::sqlite::{
-    Sqlite, SqliteArguments, SqliteConnectOptions, SqliteConnection, SqliteDone, SqlitePool,
+    Sqlite, SqliteArguments, SqliteConnectOptions, SqliteConnection, SqliteQueryResult, SqlitePool,
     SqliteRow,
 };
 use sqlx_core::transaction::Transaction;
@@ -898,22 +897,22 @@ impl DBPoolConn {
             }
             #[cfg(feature = "mysql")]
             &DriverType::Mysql => {
-                let data: MySqlDone = self.mysql.as_mut().unwrap().execute(sql).await?;
+                let data: MySqlQueryResult = self.mysql.as_mut().unwrap().execute(sql).await?;
                 return Ok(DBExecResult::from(data));
             }
             #[cfg(feature = "postgres")]
             &DriverType::Postgres => {
-                let data: PgDone = self.postgres.as_mut().unwrap().execute(sql).await?;
+                let data: PgQueryResult = self.postgres.as_mut().unwrap().execute(sql).await?;
                 return Ok(DBExecResult::from(data));
             }
             #[cfg(feature = "sqlite")]
             &DriverType::Sqlite => {
-                let data: SqliteDone = self.sqlite.as_mut().unwrap().execute(sql).await?;
+                let data: SqliteQueryResult = self.sqlite.as_mut().unwrap().execute(sql).await?;
                 return Ok(DBExecResult::from(data));
             }
             #[cfg(feature = "mssql")]
             &DriverType::Mssql => {
-                let data: MssqlDone = self.mssql.as_mut().unwrap().execute(sql).await?;
+                let data: MssqlQueryResult = self.mssql.as_mut().unwrap().execute(sql).await?;
                 return Ok(DBExecResult::from(data));
             }
             _ => {
@@ -997,7 +996,7 @@ impl DBPoolConn {
             }
             #[cfg(feature = "mysql")]
             &DriverType::Mysql => {
-                let result: MySqlDone = self
+                let result: MySqlQueryResult = self
                     .mysql
                     .as_mut()
                     .unwrap()
@@ -1007,7 +1006,7 @@ impl DBPoolConn {
             }
             #[cfg(feature = "postgres")]
             &DriverType::Postgres => {
-                let data: PgDone = self
+                let data: PgQueryResult = self
                     .postgres
                     .as_mut()
                     .unwrap()
@@ -1017,7 +1016,7 @@ impl DBPoolConn {
             }
             #[cfg(feature = "sqlite")]
             &DriverType::Sqlite => {
-                let data: SqliteDone = self
+                let data: SqliteQueryResult = self
                     .sqlite
                     .as_mut()
                     .unwrap()
@@ -1027,7 +1026,7 @@ impl DBPoolConn {
             }
             #[cfg(feature = "mssql")]
             &DriverType::Mssql => {
-                let data: MssqlDone = self
+                let data: MssqlQueryResult = self
                     .mssql
                     .as_mut()
                     .unwrap()
@@ -1348,17 +1347,17 @@ impl DBTx {
             }
             #[cfg(feature = "mysql")]
             &DriverType::Mysql => {
-                let data: MySqlDone = self.mysql.as_mut().unwrap().execute(sql).await?;
+                let data: MySqlQueryResult = self.mysql.as_mut().unwrap().execute(sql).await?;
                 return Ok(DBExecResult::from(data));
             }
             #[cfg(feature = "postgres")]
             &DriverType::Postgres => {
-                let data: PgDone = self.postgres.as_mut().unwrap().execute(sql).await?;
+                let data: PgQueryResult = self.postgres.as_mut().unwrap().execute(sql).await?;
                 return Ok(DBExecResult::from(data));
             }
             #[cfg(feature = "sqlite")]
             &DriverType::Sqlite => {
-                let data: SqliteDone = self
+                let data: SqliteQueryResult = self
                     .sqlite
                     .as_mut()
                     .unwrap()
@@ -1370,7 +1369,7 @@ impl DBTx {
             }
             #[cfg(feature = "mssql")]
             &DriverType::Mssql => {
-                let data: MssqlDone = self.mssql.as_mut().unwrap().execute(sql).await?;
+                let data: MssqlQueryResult = self.mssql.as_mut().unwrap().execute(sql).await?;
                 return Ok(DBExecResult::from(data));
             }
             _ => {
@@ -1386,7 +1385,7 @@ impl DBTx {
             }
             #[cfg(feature = "mysql")]
             &DriverType::Mysql => {
-                let data: MySqlDone = self
+                let data: MySqlQueryResult = self
                     .mysql
                     .as_mut()
                     .unwrap()
@@ -1396,7 +1395,7 @@ impl DBTx {
             }
             #[cfg(feature = "postgres")]
             &DriverType::Postgres => {
-                let data: PgDone = self
+                let data: PgQueryResult = self
                     .postgres
                     .as_mut()
                     .unwrap()
@@ -1406,7 +1405,7 @@ impl DBTx {
             }
             #[cfg(feature = "sqlite")]
             &DriverType::Sqlite => {
-                let data: SqliteDone = self
+                let data: SqliteQueryResult = self
                     .sqlite
                     .as_mut()
                     .unwrap()
@@ -1418,7 +1417,7 @@ impl DBTx {
             }
             #[cfg(feature = "mssql")]
             &DriverType::Mssql => {
-                let data: MssqlDone = self
+                let data: MssqlQueryResult = self
                     .mssql
                     .as_mut()
                     .unwrap()
@@ -1440,8 +1439,8 @@ pub struct DBExecResult {
 }
 
 #[cfg(feature = "mysql")]
-impl From<MySqlDone> for DBExecResult {
-    fn from(arg: MySqlDone) -> Self {
+impl From<MySqlQueryResult> for DBExecResult {
+    fn from(arg: MySqlQueryResult) -> Self {
         Self {
             rows_affected: arg.rows_affected(),
             last_insert_id: Some(arg.last_insert_id() as i64),
@@ -1450,8 +1449,8 @@ impl From<MySqlDone> for DBExecResult {
 }
 
 #[cfg(feature = "postgres")]
-impl From<PgDone> for DBExecResult {
-    fn from(arg: PgDone) -> Self {
+impl From<PgQueryResult> for DBExecResult {
+    fn from(arg: PgQueryResult) -> Self {
         Self {
             rows_affected: arg.rows_affected(),
             last_insert_id: None,
@@ -1460,8 +1459,8 @@ impl From<PgDone> for DBExecResult {
 }
 
 #[cfg(feature = "sqlite")]
-impl From<SqliteDone> for DBExecResult {
-    fn from(arg: SqliteDone) -> Self {
+impl From<SqliteQueryResult> for DBExecResult {
+    fn from(arg: SqliteQueryResult) -> Self {
         Self {
             rows_affected: arg.rows_affected(),
             last_insert_id: Some(arg.last_insert_rowid()),
@@ -1470,8 +1469,8 @@ impl From<SqliteDone> for DBExecResult {
 }
 
 #[cfg(feature = "mssql")]
-impl From<MssqlDone> for DBExecResult {
-    fn from(arg: MssqlDone) -> Self {
+impl From<MssqlQueryResult> for DBExecResult {
+    fn from(arg: MssqlQueryResult) -> Self {
         Self {
             rows_affected: arg.rows_affected(),
             last_insert_id: None,
