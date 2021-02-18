@@ -155,6 +155,12 @@ impl Into<py_sql::error::Error> for crate::Error {
     }
 }
 
+impl From<Error> for std::io::Error{
+    fn from(arg: Error) -> Self {
+        arg.into()
+    }
+}
+
 #[test]
 fn test_json_error() {
     let e = Error::from("fuck");
