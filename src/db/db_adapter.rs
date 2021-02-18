@@ -39,7 +39,7 @@ use sqlx_core::types::Type;
 use crate::convert::{RefJsonCodec, ResultCodec};
 use crate::db::{DBPoolOptions, DriverType};
 use crate::decode::json_decode;
-use crate::runtime::Mutex;
+use crate::runtime::sync::Mutex;
 use crate::Error;
 use crate::Result;
 
