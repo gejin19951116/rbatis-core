@@ -21,11 +21,11 @@ homepage = "https://rbatis.github.io/rbatis.io/#/en/"
 default = ["all-database"]
 
 debug_mode = []
-all-database = ["sqlx-core", "sqlx-core/all-databases", "mysql", "postgres", "sqlite", "mssql", "bit-vec"]
-mysql = ["sqlx-core", "sqlx-core/mysql"]
-postgres = ["sqlx-core", "sqlx-core/postgres", "bit-vec"]
-sqlite = ["sqlx-core", "sqlx-core/sqlite"]
-mssql = ["sqlx-core", "sqlx-core/mssql"]
+all-database = ["sqlx-core/all-databases", "mysql", "postgres", "sqlite", "mssql", "bit-vec"]
+mysql = ["sqlx-core/mysql"]
+postgres = ["sqlx-core/postgres", "bit-vec"]
+sqlite = ["sqlx-core/sqlite"]
+mssql = ["sqlx-core/mssql"]
 
 
 [dependencies]
