@@ -6,7 +6,7 @@ members = [
 
 [package]
 name = "rbatis-core"
-version = "1.8.79"
+version = "1.8.81"
 description = "Core of rbatis, the rust SQL toolkit. Not intended to be used directly."
 license = "Apache-2.0"
 edition = "2018"
@@ -19,31 +19,31 @@ homepage = "https://rbatis.github.io/rbatis.io/#/en/"
 
 [features]
 default = ["all-database"]
-
 debug_mode = []
-all-database = ["sqlx-core/all-databases", "mysql", "postgres", "sqlite", "mssql", "bit-vec"]
-mysql = ["sqlx-core/mysql"]
-postgres = ["sqlx-core/postgres", "bit-vec"]
-sqlite = ["sqlx-core/sqlite"]
-mssql = ["sqlx-core/mssql"]
+all-database = ["async-std", "sqlx-core/all-databases", "mysql", "postgres", "sqlite", "mssql", "bit-vec"]
+mysql = ["async-std", "sqlx-core/mysql"]
+postgres = ["async-std", "sqlx-core/postgres", "bit-vec"]
+sqlite = ["async-std", "sqlx-core/sqlite"]
+mssql = ["async-std", "sqlx-core/mssql"]
 
+tokio02 = ["async-std/tokio02"]
+tokio03 = ["async-std/tokio03"]
+tokio1 = ["async-std/tokio1"]
+async-io = ["async-std/async-global-executor"]
 
 [dependencies]
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1", features = ["raw_value"] }
-tokio = { version = "1.3.0", features = ["full"] }
 chrono = { version = "0.4", default-features = false, features = ["clock", "serde"] }
+async-std = { version = "1.9.0",  default-features = false, features = ["attributes"], optional = true }
 log = { version = "0.4", default-features = false }
 rexpr = { version = "1.0" }
 py_sql = "1.0"
 lazy_static = "1.4"
-
 time = { version = "0.2.16", features = ["serde"] }
 ipnetwork = { version = "0.17.0", features = ["serde"] }
-sqlx-core = { version = "0.5.1", features = ["all-types", "runtime-tokio-rustls"], optional = true }
-
+sqlx-core = { version = "0.5.1", features = ["all-types", "runtime-async-std-rustls"], optional = true }
 uuid = { version = "0.8", features = ["serde", "v4"] }
-
 #only pg
 bit-vec = { version = "0.6", features = ["serde"], optional = true }
 bigdecimal_ = { version = "0.2.0", package = "bigdecimal", features = ["serde"] }
