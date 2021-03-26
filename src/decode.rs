@@ -85,7 +85,7 @@ where
         return Result::Ok(decode_result.unwrap());
     } else {
         let e = decode_result.err().unwrap().to_string();
-        return Result::Err(Error::from(format!(
+        return Result::Err(Error::Deserialize(format!(
             "[rbatis] json_decode fail decode_type:\"{}\",serde_err:\"{}\"",
             type_name, e
         )));
