@@ -48,46 +48,18 @@ impl<'r> JsonCodec for sqlx_core::mssql::MssqlValueRef<'r> {
                 return Ok(json!(r));
             }
 
-            //TODO convert types
-            // "NEWDECIMAL" => {
-            //     let r: Result<BigDecimal, BoxDynError> = Decode::<'_, Mssql>::decode(self);
-            //     if r.is_err() {
-            //         return Err(crate::Error::from(r.err().unwrap().to_string()));
-            //     }
-            //     return Ok(serde_json::Value::from(r.unwrap().to_string()));
-            // }
-            // "DATE" => {
-            //     let r: Result<chrono::NaiveDate, BoxDynError> = Decode::<'_, Mssql>::decode(self);
-            //     if r.is_err() {
-            //         return Err(crate::Error::from(r.err().unwrap().to_string()));
-            //     }
-            //     let t = serde_json::to_value(&r.unwrap());
-            //     return Ok(t.unwrap_or(serde_json::Value::Null));
-            // }
-            // "TIME" => {
-            //     let r: Result<chrono::NaiveTime, BoxDynError> = Decode::<'_, Mssql>::decode(self);
-            //     if r.is_err() {
-            //         return Err(crate::Error::from(r.err().unwrap().to_string()));
-            //     }
-            //     let t = serde_json::to_value(&r.unwrap());
-            //     return Ok(t.unwrap_or(serde_json::Value::Null));
-            // }
-            // "DATETIME" => {
-            //     let r: Result<chrono::NaiveDateTime, BoxDynError> = Decode::<'_, Mssql>::decode(self);
-            //     if r.is_err() {
-            //         return Err(crate::Error::from(r.err().unwrap().to_string()));
-            //     }
-            //     let t = serde_json::to_value(&r.unwrap());
-            //     return Ok(t.unwrap_or(serde_json::Value::Null));
-            // }
-            // "TIMESTAMP" => {
-            //     let r: Result<chrono::NaiveDateTime, BoxDynError> = Decode::<'_, Mssql>::decode(self);
-            //     if r.is_err() {
-            //         return Err(crate::Error::from(r.err().unwrap().to_string()));
-            //     }
-            //     let t = serde_json::to_value(&r.unwrap());
-            //     return Ok(t.unwrap_or(serde_json::Value::Null));
-            // }
+            "DATE" | "TIME" | "DATETIME" | "TIMESTAMP" => {
+                let r: String = Decode::<'_, Mssql>::decode(self)?;
+                return Ok(json!(r));
+            }
+
+            "NEWDECIMAL" => {
+                let r: Result<String, BoxDynError> = Decode::<'_, Mssql>::decode(self);
+                if r.is_err() {
+                    return Err(crate::Error::from(r.err().unwrap().to_string()));
+                }
+                return Ok(serde_json::Value::from(r.unwrap().to_string()));
+            }
             // you can use already supported types to decode this
             _ => {
                 return Err(crate::Error::from(format!(

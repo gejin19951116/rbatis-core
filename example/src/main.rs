@@ -6,9 +6,9 @@ async fn main() -> Result<(), Error> {
     //Automatic judgment of database type
     let pool = DBPool::new("mysql://root:123456@localhost:3306/test").await?;
     let mut conn = pool.acquire().await?;
-    let count: serde_json::Value = conn
-        .fetch("SELECT count(1) FROM biz_activity;")
-        .await.unwrap().0;
-    println!("count: {}", count);
+    let data:(serde_json::Value,usize) = conn
+        .fetch("SELECT * FROM biz_activity;")
+        .await.unwrap();
+    println!("count: {:?}", data);
     return Ok(());
 }
