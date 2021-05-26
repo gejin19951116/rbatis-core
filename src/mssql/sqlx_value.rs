@@ -13,8 +13,7 @@ use crate::convert::{JsonCodec, RefJsonCodec, ResultCodec};
 impl<'r> JsonCodec for sqlx_core::mssql::MssqlValueRef<'r> {
     fn try_to_json(self) -> crate::Result<serde_json::Value> {
         //TODO batter way to match type replace use string match
-        let type_string = self.type_info().name().to_owned();
-        match type_string.as_str() {
+        match self.type_info().name() {
             "NULL" => {
                 return Ok(serde_json::Value::Null);
             }
@@ -54,18 +53,13 @@ impl<'r> JsonCodec for sqlx_core::mssql::MssqlValueRef<'r> {
             }
 
             "NEWDECIMAL" => {
-                let r: Result<String, BoxDynError> = Decode::<'_, Mssql>::decode(self);
-                if r.is_err() {
-                    return Err(crate::Error::from(r.err().unwrap().to_string()));
-                }
-                return Ok(serde_json::Value::from(r.unwrap().to_string()));
+                let r: String = Decode::<'_, Mssql>::decode(self)?;
+                return Ok(serde_json::Value::from(r));
             }
             // you can use already supported types to decode this
             _ => {
-                return Err(crate::Error::from(format!(
-                    "un support database type for:{:?}!",
-                    type_string
-                )))
+                let r: Option<String> = Decode::<'_, Mssql>::decode(self)?;
+                return Ok(json!(r));
             }
         }
     }

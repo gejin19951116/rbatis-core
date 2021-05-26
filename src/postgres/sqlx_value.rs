@@ -19,8 +19,7 @@ use chrono::Utc;
 
 impl<'c> JsonCodec for PgValueRef<'c> {
     fn try_to_json(self) -> crate::Result<serde_json::Value> {
-        let type_string = self.type_info().name().to_owned();
-        match type_string.as_str() {
+        match self.type_info().name() {
             "VOID" => {
                 return Ok(serde_json::Value::Null);
             }
