@@ -25,34 +25,23 @@ impl<'c> JsonCodec for PgValueRef<'c> {
             }
             "NUMERIC" => {
                 //decimal
-                let r: Option<BigDecimal> = Decode::<'_, Postgres>::decode(self)?;
+                let r: Option<String> = Decode::<'_, Postgres>::decode(self)?;
                 return Ok(json!(r));
             }
             "NUMERIC[]" => {
                 //decimal
-                let r: Option<Vec<BigDecimal>> = Decode::<'_, Postgres>::decode(self)?;
+                let r: Option<Vec<String>> = Decode::<'_, Postgres>::decode(self)?;
                 return Ok(json!(r));
             }
             "MONEY" => {
                 //decimal
-                let r: Option<PgMoney> = Decode::<'_, Postgres>::decode(self)?;
-                if r.is_none() {
-                    return Ok(serde_json::Value::Null);
-                }
-                return Ok(json!(r.unwrap().0.to_string()));
+                let r: Option<String> = Decode::<'_, Postgres>::decode(self)?;
+                return Ok(json!(r));
             }
             "MONEY[]" => {
                 //decimal
-                let r: Option<Vec<PgMoney>> = Decode::<'_, Postgres>::decode(self)?;
-                if r.is_none() {
-                    return Ok(serde_json::Value::Null);
-                }
-                let data = r.unwrap();
-                let mut datas = Vec::with_capacity(data.len());
-                for x in data {
-                    datas.push(x.0.to_string());
-                }
-                return Ok(json!(datas));
+                let r: Option<Vec<String>> = Decode::<'_, Postgres>::decode(self)?;
+                return Ok(json!(r));
             }
             "BOOL" => {
                 let r: Option<bool> = Decode::<'_, Postgres>::decode(self)?;

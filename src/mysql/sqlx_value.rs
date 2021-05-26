@@ -17,7 +17,7 @@ impl<'r> JsonCodec for sqlx_core::mysql::MySqlValueRef<'r> {
                 return Ok(serde_json::Value::Null);
             }
             "DECIMAL" => {
-                let r: Option<BigDecimal> = Decode::<'_, MySql>::decode(self)?;
+                let r: Option<String> = Decode::<'_, MySql>::decode(self)?;
                 return Ok(json!(r));
             }
             "BIGINT UNSIGNED" => {
