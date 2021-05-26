@@ -3,7 +3,7 @@ use rbatis_core::Error;
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
-    //Automatic judgment of database type
+    //Automatic judgment of database type or  postgres://postgres:123456@localhost:5432/postgres
     let pool = DBPool::new("mysql://root:123456@localhost:3306/test").await?;
     let mut conn = pool.acquire().await?;
     let data:(serde_json::Value,usize) = conn
